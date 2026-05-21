@@ -1,0 +1,14 @@
+# Archivos objeto y ejecutable
+*.o
+listas
+
+# Editores
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Sistemas operativos
+.DS_Store
+Thumbs.db
