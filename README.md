@@ -1,17 +1,17 @@
-# Sistema de listas ligadas y heap manual
+Sistema de listas ligadas y heap manual
 
 Proyecto para la asignatura **Estructuras y programación de computadoras**, semestre 2026-2, Facultad de Ingeniería, UNAM.
 
-Implementación en lenguaje ensamblador NASM (x86, 32 bits, Linux) de un sistema que permite crear y manipular múltiples listas ligadas simples, donde cada nodo se almacena en un heap administrado manualmente mediante una lista doblemente ligada de bloques de memoria.
+Implementación en lenguaje ensamblador NASM (x86, 32 bits) de un sistema que permite crear y manipular múltiples listas ligadas simples, donde cada nodo se almacena en un heap administrado manualmente mediante una lista doblemente ligada de bloques de memoria.
 
-## Características
+Características
 
-- Múltiples listas ligadas simples independientes (hasta 10).
+- Múltiples listas ligadas simples independientes.
 - Menú interactivo por consola.
 - Gestor de memoria propio (heap manual) basado en lista doblemente ligada.
 - Estrategia de asignación **First Fit**.
 - División de bloques cuando sobra espacio suficiente.
-- **Coalescencia**: fusión automática de bloques libres adyacentes al liberar.
+- Coalescencia: fusión automática de bloques libres adyacentes al liberar.
 - Sin uso de funciones externas de memoria dinámica (no `malloc`, no `libc`).
 - E/S por syscalls directas de Linux (`sys_read`, `sys_write`, `sys_brk`, `sys_exit`).
 
@@ -27,9 +27,9 @@ proyecto/
 └── README.md
 ```
 
-## Modelo de datos
+Modelo de datos
 
-### Nodo de lista simple (8 bytes)
+Nodo de lista simple 
 
 | offset | campo      | tamaño |
 |--------|------------|--------|
@@ -46,19 +46,7 @@ proyecto/
 | 12     | anterior       | 4 B    |
 | 16     | datos…         | n B    |
 
-## Requisitos
-
-- Linux (probado en Ubuntu) — funciona en distribuciones derivadas.
-- **NASM** (Netwide Assembler).
-- **ld** (GNU linker) con soporte para `elf_i386`.
-- En sistemas de 64 bits hay que instalar los multilib:
-
-```bash
-sudo apt update
-sudo apt install nasm gcc-multilib
-```
-
-## Compilación
+Compilación
 
 ```bash
 make
@@ -73,7 +61,7 @@ make run     # compila y ejecuta
 make clean   # elimina objetos y binario
 ```
 
-## Uso
+Uso
 
 Al ejecutar `./listas` aparece el menú:
 
@@ -88,7 +76,7 @@ Al ejecutar `./listas` aparece el menú:
 8. Salir
 ```
 
-### Ejemplo de sesión
+Ejemplo de sesión
 
 ```
 Opción: 1
@@ -115,44 +103,37 @@ Bloque en 138915888  tam=8  [OCUPADO]
 Bloque en 138915912  tam=65448 [LIBRE]
 ```
 
-## Detalles de implementación
+Detalles de implementación
 
-### Inicialización del heap
+Inicialización del heap
 
 `heap_init` usa la syscall `sys_brk` (45) para reservar 64 KB del segmento de datos del proceso. Crea un único bloque libre que abarca todo el espacio.
 
-### Asignación (First Fit)
+Asignación (First Fit)
 
 `heap_alloc(tam)` recorre la lista de bloques desde el inicio. El primer bloque libre con `tamaño >= tam` se utiliza. Si el sobrante es mayor a `TAM_CAB + 4`, el bloque se divide insertando un nuevo bloque libre con el remanente.
 
-### Liberación con coalescencia
+Liberación con coalescencia
 
 `heap_free(ptr)` marca el bloque como libre y luego intenta fusionarlo con su vecino siguiente y con su vecino anterior si están libres. Esto evita la fragmentación.
 
-### Convenciones de registros
+Convenciones de registros
 
 - Paso de parámetros: por pila (cdecl).
 - Valor de retorno: `eax`.
 - Registros preservados (callee-saved): `ebx`, `esi`, `edi`, `ebp`.
 - Cada función documenta los registros que modifica.
 
-## Pruebas realizadas
 
-| Prueba                                          | Resultado |
-|-------------------------------------------------|-----------|
-| Crear múltiples listas independientes           | ✅        |
-| Insertar y eliminar nodos                       | ✅        |
-| Eliminar elemento en cabeza, medio y cola       | ✅        |
-| Reutilización de memoria liberada               | ✅        |
-| Fusión correcta de bloques libres adyacentes    | ✅        |
-| Las listas no interfieren entre sí              | ✅        |
 
-## Autor
+Autor
 
-Proyecto académico — Facultad de Ingeniería, UNAM.
+Facultad de Ingeniería, UNAM.
 Asignatura: Estructuras y programación de computadoras.
 Profesora: Ing. Adara Mercado Martínez.
 
-## Licencia
-
-Uso educativo.
+Integrantes: 
+Morales Basilio Alejandra Sofía 
+Santos Cruz Lair Abraham
+Reyes García Miguel Ángel 
+Torres Rodriguez Lizeth Danae
