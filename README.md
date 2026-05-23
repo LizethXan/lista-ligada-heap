@@ -133,7 +133,7 @@ Asignatura: Estructuras y programación de computadoras.
 Profesora: Ing. Adara Mercado Martínez.
 
 Integrantes: 
-Morales Basilio Alejandra Sofía 
-Santos Cruz Lair Abraham
-Reyes García Miguel Ángel 
-Torres Rodriguez Lizeth Danae
+* Morales Basilio Alejandra Sofía
+* Reyes García Miguel Ángel 
+* Santos Cruz Lair Abraham
+* Torres Rodriguez Lizeth Danae
